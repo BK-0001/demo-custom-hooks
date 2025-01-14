@@ -10,8 +10,7 @@ export function useClickOutside<T extends RefObject<HTMLElement>>(
       // if (ref.current && !ref.current.contains(event.target as Node)) {
       // callback();
       // }
-
-      console.log(event.target);
+      // console.log(event.target);
     };
 
     document.addEventListener("mousedown", closeDialog);
