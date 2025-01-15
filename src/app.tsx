@@ -1,13 +1,10 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import { useClickOutside } from "./hooks/use-click-outside";
 import useDebounce from "./hooks/use-debounce";
 import { useDialog } from "./hooks/use-dialog";
 
 export function App() {
   const { ref: dialogRef, open, close } = useDialog();
-
-  useClickOutside(dialogRef, close);
 
   const [title, setTitle] = useState<string>("");
   const titleDebounced = useDebounce(title, 500);
@@ -23,20 +20,22 @@ export function App() {
       <button onClick={open}>Open Dialog</button>
 
       {createPortal(
-        <dialog ref={dialogRef}>
-          <h1>Dialog Title</h1>
+        <dialog ref={dialogRef} style={{ padding: 0, border: 0 }}>
+          <div onClick={(e) => e.stopPropagation()} style={{ padding: 12 }}>
+            <h1>Dialog Title</h1>
 
-          <label htmlFor="title">Title: </label>
-          <input
-            type="text"
-            id="title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-          <p>Debounced Value: {titleDebounced}</p>
+            <label htmlFor="title">Title: </label>
+            <input
+              type="text"
+              id="title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
+            <p>Debounced Value: {titleDebounced}</p>
 
-          <div>
-            <button onClick={close}>Close Dialog</button>
+            <div>
+              <button onClick={close}>Close Dialog</button>
+            </div>
           </div>
         </dialog>,
         document.getElementById("dialog") as HTMLDivElement

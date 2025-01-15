@@ -5,18 +5,20 @@ export function useClickOutside<T extends RefObject<HTMLElement>>(
   callback: () => void
 ) {
   useEffect(() => {
-    const closeDialog = (event: MouseEvent) => {
-      // TODO: add logic to trigger event only when click outside of the dialog
-      // if (ref.current && !ref.current.contains(event.target as Node)) {
-      // callback();
-      // }
-      // console.log(event.target);
+    const close = (event: MouseEvent) => {
+      if (
+        ref.current &&
+        ref.current.tagName === "DIALOG" &&
+        ref.current === event.target
+      ) {
+        callback();
+      }
     };
 
-    document.addEventListener("mousedown", closeDialog);
+    document.addEventListener("mousedown", close);
 
     return () => {
-      document.removeEventListener("mousedown", closeDialog);
+      document.removeEventListener("mousedown", close);
     };
   }, []);
 }
